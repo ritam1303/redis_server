@@ -1,103 +1,135 @@
-🧠 Custom Redis Server (Python + Sockets)
+# 🧠 Custom Redis Server (Python + Sockets)
 
-This is a minimal implementation of a Redis-like server in pure Python using socket. It listens on a TCP port and supports a subset of Redis commands using the Redis Serialization Protocol (RESP).
+This is a minimal implementation of a Redis-like server in pure Python
+using `socket`. It listens on a TCP port and supports a subset of Redis
+commands using the **Redis Serialization Protocol (RESP)**.
 
-🚀 Features
+------------------------------------------------------------------------
+
+## 🚀 Features
 
 This lightweight Redis clone supports the following commands:
 
-String Commands
+### String Commands
 
-PING
+-   `PING`
+-   `SET <key> <value>`
+-   `GET <key>`
 
-SET <key> <value>
+### List Commands
 
-GET <key>
+-   `LPUSH <key> <value>`
+-   `RPUSH <key> <value>`
+-   `LPOP <key>`
+-   `RPOP <key>`
+-   `LRANGE <key> <start> <end>`
 
-List Commands
+------------------------------------------------------------------------
 
-LPUSH <key> <value>
+## 🧰 How It Works
 
-RPUSH <key> <value>
+-   The server listens on TCP `port 9000` (`0.0.0.0:9000`).
+-   Data is stored in-memory in a Python dictionary (`db`).
+-   Uses RESP to encode/decode commands.
+-   Supports both simple strings, bulk strings, arrays, and integers as
+    return types.
 
-LPOP <key>
+------------------------------------------------------------------------
 
-RPOP <key>
+## 🛠 Getting Started
 
-LRANGE <key> <start> <end>
+### 1. Clone the Repo (or create the file locally)
 
-🧰 How It Works
-
-The server listens on TCP port 9000 (0.0.0.0:9000).
-
-Data is stored in-memory in a Python dictionary (db).
-
-Uses RESP to encode/decode commands.
-
-Supports both simple strings, bulk strings, arrays, and integers as return types.
-
-🛠 Getting Started
-1. Clone the Repo (or create the file locally)
+``` bash
 git clone <repo-url>
 cd <repo-folder>
+```
 
-2. Run the Server
+### 2. Run the Server
+
+``` bash
 python3 redis_server.py
-
+```
 
 You should see:
 
-[+] Custom Redis listening on port 9000
+    [+] Custom Redis listening on port 9000
 
-💬 Interact with the Server
+------------------------------------------------------------------------
 
-You can test this using a Redis client or even telnet:
+## 💬 Interact with the Server
 
-Using redis-cli
+You can test this using a Redis client or even `telnet`:
+
+### Using `redis-cli`
+
+``` bash
 redis-cli -p 9000
-
+```
 
 Example commands:
 
+``` bash
 PING
 SET name Ritam
 GET name
 LPUSH list1 apple
 LPUSH list1 banana
 LRANGE list1 0 -1
+```
 
-Or via telnet:
+### Or via `telnet`:
+
+``` bash
 telnet localhost 9000
-
+```
 
 Commands must be encoded in RESP format. Example:
 
-*2
-$4
-PING
+    *2
+    $4
+    PING
 
-📦 Code Overview
+------------------------------------------------------------------------
 
-socket is used for network communication.
+## 📦 Code Overview
 
-parse_resp() handles Redis protocol parsing.
+-   `socket` is used for network communication.
+-   `parse_resp()` handles Redis protocol parsing.
+-   Commands are routed based on the input and validated including
+    correct arguments.
 
-Commands are routed based on the input and validated including correct arguments.
+------------------------------------------------------------------------
 
-🧪 Sample Output
-[+] Custom Redis listening on port 9000
-[+] Connected by ('127.0.0.1', 54321)
-RAW DATA: b'*1\r\n$4\r\nPING\r\n'
-COMMAND: PING ARGS: []
-RAW DATA: b'*3\r\n$3\r\nSET\r\n$4\r\nname\r\n$5\r\nRitam\r\n'
-COMMAND: SET ARGS: ['name', 'Ritam']
+## 🧪 Sample Output
 
-📝 TODO
+    [+] Custom Redis listening on port 9000
+    [+] Connected by ('127.0.0.1', 54321)
+    RAW DATA: b'*1\r\n$4\r\nPING\r\n'
+    COMMAND: PING ARGS: []
+    RAW DATA: b'*3\r\n$3\r\nSET\r\n$4\r\nname\r\n$5\r\nRitam\r\n'
+    COMMAND: SET ARGS: ['name', 'Ritam']
 
-Support more Redis commands (DEL, EXPIRE, etc.)
+------------------------------------------------------------------------
 
-Implement persistence (RDB/AOF-like behavior)
+## 📝 TODO
 
-Handle multiple client sessions concurrently
+-   Support more Redis commands (`DEL`, `EXPIRE`, etc.)
+-   Implement persistence (RDB/AOF-like behavior)
+-   Handle multiple client sessions concurrently
+-   Add error logging and edge-case handling
 
-Add error logging and edge-case handling
+------------------------------------------------------------------------
+
+## 📚 References
+
+-   Redis Protocol Specification:
+    https://redis.io/docs/latest/develop/reference/protocol-spec/
+-   Redis Command Reference: https://redis.io/commands/
+
+------------------------------------------------------------------------
+
+## 🧑‍💻 Author
+
+Made with 🛠️ and ❤️ by @Ritam\
+Open to feedback and contributions!
